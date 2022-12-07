@@ -1,6 +1,6 @@
 # pid
 
-A simple and naive library for PID control. See `example/` for the tl;dr.
+A simple and naive library for PID control. See `example/main.cpp` for tl;dr.
 
 ```
 pid
