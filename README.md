@@ -22,7 +22,7 @@ P<float> proportional_controller;
 I<double> integral_controller;
 D<long double> derivative_controller;
 
-// A controller class allows for combinations of control with unique types
+// A controller class allows for types of control
 // Nested template parameters must have the same data type
 Controller<P<float>, I<float>> pi_controller;  // OK
 Controller<P<float>, P<float>> pp_controller;  // compile-time error
