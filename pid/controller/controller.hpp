@@ -24,7 +24,7 @@ namespace pid
  * Only one of each type can be used with the same typename parameter or a
  * compilation error will occur.
  * 
- * @tparam C Comma-separated list of unique P, I or D types
+ * @tparam C Variadic parameter of unique P, I and D types
  */
 template<class... C>
 class Controller : public C...

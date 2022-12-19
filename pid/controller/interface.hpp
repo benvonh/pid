@@ -14,7 +14,7 @@
 namespace pid
 {
 /**
- * @brief An abstract base class to interface with the Controller class.
+ * @brief An abstract base class interface for derived controllers.
  * 
  * @tparam T Data type
  */

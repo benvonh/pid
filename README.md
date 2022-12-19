@@ -1,6 +1,9 @@
 # pid
 
-A simple and naive library for PID control. See `example/main.cpp` for tl;dr.
+A simple and naive library for PID control.
+See `example/main.cpp` for a quick start.
+
+# Files
 
 ```
 pid
@@ -13,7 +16,7 @@ pid
 
 # Usage
 
-```C++
+```cpp
 // All controllers under the `pid` namespace
 using namespace pid;
 
