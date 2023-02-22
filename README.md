@@ -1,57 +1,78 @@
 # pid
 
-A simple and naive library for PID control.
-See `example/main.cpp` for a quick start.
+Minimal PID control library.
 
-# Files
 
+Written in 100 lines of code, the library offers basic PID functionality. For
+more specialised features such as output clamping and internal timing, you can
+create helper functions or a wrapper class.
+
+## Example
+
+```C++
+#include "pid/pid.hpp"
+
+int main()
+{
+    pid::PID<> controller{};
+    double error = 10.0;
+    double period = 0.1;
+
+    controller.Kp = 1.0;
+    controller.Ki = 2.0;
+    controller.Kd = 3.0;
+
+    controller.Period = period;
+
+    for (double time = 0.0; time < 1.0; time += period)
+    {
+        controller.Time = time;
+
+        double output = controller.Loop(error);
+        double prev_err = controller.GetPrevError();
+        double total_err = controller.GetTotalError();
+    }
+
+    return 0;
+}
 ```
-pid
-├── controller
-│   ├── controller.hpp
-│   ├── interface.hpp
-│   └── types.hpp
-└── pid.hpp
-```
 
-# Usage
+## Usage
 
-```cpp
-// All controllers under the `pid` namespace
+```C++
+// Library under the `pid` namespace
 using namespace pid;
 
-// Template argument specifies the data type
-P<float> proportional_controller;
-I<double> integral_controller;
-D<long double> derivative_controller;
+// Template argument specifies data type
+P<int>    proportional;
+I<float>  integral;
+D<double> derivative;
 
-// A controller class allows for types of control
-// Nested template parameters must have the same data type
-Controller<P<float>, I<float>> pi_controller;  // OK
-Controller<P<float>, P<float>> pp_controller;  // compile-time error
-Controller<P<float>, D<double>> pd_controller; // compile-time error
+// Controller class can combine controller types
+Controller<P<float>, I<float>>  pi; // ok
+Controller<P<float>, P<float>>  pp; // error
+Controller<P<float>, D<double>> pd; // error
 
-// NOTE: Controllers do not define a constructor
-Controller<P<float>, I<float>, D<float>> pid_controller{}; // zero-initialised
+// Controllers should be zero-initialised
+Controller<P<float>, I<float>, D<float>> pid{};
 
-// Aliases are provided for easier controller declaration
-// Default template parameter is double
-PI<float> pi_controller; // same as above
-PID<> pid_controller;    // same as above but with double
+// Aliases are defined for convenience
+// Default parameter is `double`
+PI<float> pi;
+PID<>     pid;
 
-// Depending on the controller composition, certain fields are inherited
-pid_controller.Kp = 1.0; // only with P<>
-pid_controller.Ki = 2.0; // only with I<>
-pid_controller.Kd = 3.0; // only with D<>
+// Each controller type defines its own gain field
+pid.Kp = 1.0; // only for P<>
+pid.Ki = 2.0; // only for I<>
+pid.Kd = 3.0; // only for D<>
 
-// Some control types have special member functions
-pid_controller.GetTotalError(); // only with I<>
-pid_controller.GetPrevError();  // only with D<>
-// ...and special field requirements
-pid_controller.Time = 4.0;      // total time elapsed for I<>
-pid_controller.Period = 5.0;    // sampling period for D<>
+// Some controller types also define special member functions
+double total_error = pid.GetTotalError(); // only for I<>
+double prev_error  = pid.GetPrevError();  // only for D<>
+// ...and field requirements
+pid.Time   = 4.0; // only for I<>
+pid.Period = 5.0; // only for D<>
 
-// To run the controller
-pid_controller.Control(6.0);
-proportional_controller.Control(7.0);
+// To run the controller, pass the error
+double output = pid.Loop(6.0);
 ```
