@@ -5,14 +5,12 @@
 
 namespace pid
 {
-
 template<typename T>
 class P : protected Base<T>
 {
 public:
     T Kp;
 
-protected:
     inline virtual T Loop(const T err) override
     {
         return Kp * err;
@@ -31,14 +29,14 @@ public:
         return m_Sum;
     }
 
-protected:
-    T m_Sum;
-
     inline virtual T Loop(const T err) override
     {
         m_Sum += err;
         return Ki * m_Sum * Time;
     }
+
+protected:
+    T m_Sum;
 };
 
 template<typename T>
@@ -52,9 +50,6 @@ public:
     {
         return m_Err;
     }
-
-protected:
-    T m_Err;
     
     inline virtual T Loop(const T err) override
     {
@@ -62,8 +57,10 @@ protected:
         m_Err = err;
         return Kd * (err - prev_err) / Period;
     }
-};
 
+protected:
+    T m_Err;
+};
 }
 
 #endif/*__PID__TYPES_HPP__*/

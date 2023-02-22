@@ -5,7 +5,6 @@
 
 namespace pid
 {
-
 template<typename T = double>
 using PI = Controller<P<T>, I<T>>;
 
@@ -14,7 +13,6 @@ using PD = Controller<P<T>, D<T>>;
 
 template<typename T = double>
 using PID = Controller<P<T>, I<T>, D<T>>;
-
 };
 
 #endif/*__PID_HPP__*/

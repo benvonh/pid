@@ -3,16 +3,14 @@
 
 namespace pid
 {
-
 template<typename T>
 class Base
 {
 protected:
     using _Type_ = T;
 
-    virtual inline T Loop(const T err) = 0;
+    inline virtual T Loop(const T err) = 0;
 };
-
 }
 
 #endif/*__PID__BASE_HPP__*/
