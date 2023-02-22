@@ -4,8 +4,8 @@ Minimal PID control library.
 
 
 Written in 100 lines of code, the library offers basic PID functionality. For
-more specialised features such as output clamping and internal timing, you can
-create helper functions or a wrapper class.
+more specialised features such as output clamping and internal timing, you
+should create helper functions or a wrapper class.
 
 ## Example
 
@@ -53,7 +53,8 @@ Controller<P<float>, I<float>>  pi; // ok
 Controller<P<float>, P<float>>  pp; // error
 Controller<P<float>, D<double>> pd; // error
 
-// Controllers should be zero-initialised
+// Controllers do not define a constructor
+// and should be zero-initialised
 Controller<P<float>, I<float>, D<float>> pid{};
 
 // Aliases are defined for convenience
@@ -70,8 +71,8 @@ pid.Kd = 3.0; // only for D<>
 double total_error = pid.GetTotalError(); // only for I<>
 double prev_error  = pid.GetPrevError();  // only for D<>
 // ...and field requirements
-pid.Time   = 4.0; // only for I<>
-pid.Period = 5.0; // only for D<>
+pid.Time   = 4.0; // time elapsed    - only for I<>
+pid.Period = 5.0; // sampling period - only for D<>
 
 // To run the controller, pass the error
 double output = pid.Loop(6.0);
