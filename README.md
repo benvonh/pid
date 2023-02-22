@@ -10,20 +10,21 @@ Minimal PID control library.
 int main()
 {
     pid::PID<> controller{};
-    double error = 10.0;
-    double period = 0.1;
+    
+    double Ts = 0.1;
+    double err = 10.0;
 
     controller.Kp = 1.0;
     controller.Ki = 2.0;
     controller.Kd = 3.0;
 
-    controller.Period = period;
+    controller.Period = Ts;
 
-    for (double time = 0.0; time < 1.0; time += period)
+    for (double time = 0.0; time < 1.0; time += Ts)
     {
         controller.Time = time;
 
-        double output = controller.Loop(error);
+        double output = controller.Loop(err);
         double prev_err = controller.GetPrevError();
         double total_err = controller.GetTotalError();
     }
@@ -44,9 +45,9 @@ I<float> integral;
 D<double> derivative;
 
 // Controller class combines P, I and D types
-Controller<P<float>, I<float>> pi;      // ok
-Controller<P<float>, P<float>> pp;      // error
-Controller<P<float>, D<double>> pd;     // error
+Controller<P<float>, I<float>>     pi;  // ok
+Controller<P<float>, P<float>>     pp;  // error
+Controller<P<float>, D<double>>    pd;  // error
 Controller<P<int>, I<int>, D<int>> pid; // ok
 
 // Controllers do not define a constructor
