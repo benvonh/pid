@@ -33,7 +33,7 @@ class I : virtual public Base<T>
 public:
   T Ki;
 
-  virtual inline const T GetTotalError() const final
+  virtual inline const T get_total_error() const final
   {
     return m_Sum;
   }
@@ -54,7 +54,7 @@ class D : virtual public Base<T>
 public:
   T Kd;
 
-  virtual inline const T GetPrevError() const final
+  virtual inline const T get_prev_error() const final
   {
     return m_Prev;
   }
@@ -63,7 +63,7 @@ public:
   {
     T out = (err - m_Prev) / this->dt;
     m_Prev = err;
-    return out;
+    return Kd * out;
   }
 
 private:

@@ -5,28 +5,29 @@
 
   outputs = { self, nixpkgs }:
   let
-    dir = builtins.toString ./.;
-
-    pkgs = import nixpkgs { system = "x86_64-linux"; };
-
-    buildInputs = [ pkgs.gcc ];
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { system = system; };
+    buildInputs = with pkgs; [ zsh gcc python3 ];
   in
   rec {
-    devShells.x86_64-linux.default = pkgs.mkShell {
+    devShells.${system}.default = pkgs.mkShell {
       inherit buildInputs;
+      shellHook = ''
+        export PYTHONPATH=$PYTHONPATH:$PWD
+        exec zsh
+      '';
     };
 
-    packages.x86_64-linux.default = pkgs.stdenv.mkDerivation {
+    packages.${system}.default = pkgs.stdenv.mkDerivation {
       inherit buildInputs;
-
       src = self;
       name = "pid";
       buildPhase = ''
-        make
+        g++ examples/example.cpp -o example
       '';
       installPhase = ''
-        mkdir -p $out/bin
-        install -t $out/bin example
+        mkdir $out
+        install -m +x -t $out example examples/example.py
       '';
     };
   };
