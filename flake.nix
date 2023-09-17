@@ -1,5 +1,5 @@
 {
-  description = "Minimal PID controller in C++";
+  description = "Minimal PID controller for C++ and Python";
 
   inputs.nixpkgs.url = "nixpkgs/nixpkgs-unstable";
 
@@ -23,7 +23,7 @@
       src = self;
       name = "pid";
       buildPhase = ''
-        g++ examples/example.cpp -o example
+        g++ -o example examples/example.cpp
       '';
       installPhase = ''
         mkdir $out
