@@ -74,7 +74,7 @@ output = pid(5.0)
 ## Examples
 **Manual**
 ```sh
-g++ examples/example.cpp -o example
+g++ -o example examples/example.cpp
 export PYTHONPATH=$PYTHONPATH:$PWD
 ./example
 ./examples/example.py
