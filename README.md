@@ -1,5 +1,5 @@
 # pid
-Minimal PID controller for C++ and Python
+Minimal PID controller for C++ and Python. Feel free to copy `pid.hpp` and `pid.py`.
 
 ## Usage
 **C++**
