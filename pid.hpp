@@ -19,8 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#ifndef __PID_HPP__
-#define __PID_HPP__
+#pragma once
 
 namespace pid
 {
@@ -112,5 +111,3 @@ using PD = Controller<P<T>, D<T>>;
 template<typename T=double>
 using PID = Controller<P<T>, I<T>, D<T>>;
 }
-
-#endif/*__PID_HPP__*/
