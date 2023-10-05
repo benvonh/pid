@@ -16,7 +16,7 @@
 
       name = "pid";
 
-			buildInputs = [ pkgs.gcc ];
+      buildInputs = [ pkgs.gcc ];
 
       buildPhase = "g++ -o example example.cpp";
 
