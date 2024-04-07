@@ -15,13 +15,13 @@ int main()
   // Set derivative gain
   controller.Kd = 2.0;
 
-  //---------- EXAMPLE SETUP ----------//
+  //---------- EXAMPLE DATA ----------//
   // Pre-generate example dt values
   std::array<double, 3> dts { 0.11, 0.12, 0.11 };
   // Pre-generate example error values
   std::array<double, 3> errors { 9.8, 7.6, 5.4 };
 
-  //---------- CONTROLLER EXAMPLE USAGE ----------//
+  //---------- CONTROLLER USAGE ----------//
   // Enter control loop
   for (size_t i = 0; i < 3; ++i)
   {
@@ -37,8 +37,8 @@ int main()
     std::cout << "controller.dt  : " << controller.dt << '\n';
     std::cout << "error[i]       : " << errors[i] << '\n';
     std::cout << "output(error)  : " << output << '\n';
-    std::cout << "get_prev_error : " << controller.get_prev_error() << '\n';
-    std::cout << "get_total_error: " << controller.get_total_error() << '\n';
+    std::cout << "get_prev_error : " << controller.last_error() << '\n';
+    std::cout << "get_total_error: " << controller.total_error() << '\n';
   }
 
   return 0;
