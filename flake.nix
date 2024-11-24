@@ -3,14 +3,9 @@
 
   inputs.nixpkgs.url = "nixpkgs/nixpkgs-unstable";
 
-  outputs = { self, nixpkgs }:
-  let
-    system = "x86_64-linux";
-
-    pkgs = import nixpkgs { system = system; };
-  in
+  outputs = { self, pkgs }:
   {
-    packages.${system}.default = pkgs.stdenv.mkDerivation {
+    packages.x86_64-linux.default = pkgs.stdenv.mkDerivation {
 
       src = self;
 

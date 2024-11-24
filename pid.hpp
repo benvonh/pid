@@ -23,91 +23,81 @@
 
 namespace pid
 {
-template<typename T>
-class Base
-{
-public:
-  virtual T operator()(const T err) = 0;
-
-  T dt;
-
-protected:
-  using ValueType = T;
-};
-
-template<typename T>
-class P : virtual public Base<T>
-{
-public:
-  T operator()(const T err) override
+  template<typename T> class Base
   {
-    return Kp * err;
-  }
+    public:
+      T dt;
 
-  T Kp;
-};
+      virtual T operator()(const T error) = 0;
 
-template<typename T>
-class I : virtual public Base<T>
-{
-public:
-  T operator()(const T err) override
+    protected:
+      using ValueType = T;
+  };
+
+  template<typename T> class P : virtual public Base<T>
   {
-    M_sum += err * this->dt;
-    return Ki * M_sum;
-  }
+    public:
+      T Kp;
 
-  virtual T total_error() const final
+      T operator()(const T error) override
+      {
+        return Kp * error;
+      }
+  };
+
+  template<typename T> class I : virtual public Base<T>
   {
-    return M_sum;
-  }
+    public:
+      T Ki;
 
-  T Ki;
+      T operator()(const T error) override
+      {
+        M_sum += error * this->dt;
+        return Ki * M_sum;
+      }
 
-private:
-  T M_sum;
-};
+      virtual T total_error() const final
+      {
+        return M_sum;
+      }
 
-template<typename T>
-class D : virtual public Base<T>
-{
-public:
-  T operator()(const T err) override
+    private:
+      T M_sum;
+  };
+
+  template<typename T> class D : virtual public Base<T>
   {
-    T out = (err - m_Prev) / this->dt;
-    m_Prev = err;
-    return Kd * out;
-  }
+    public:
+      T Kd;
 
-  virtual T last_error() const final
+      T operator()(const T error) override
+      {
+        T out = (error - M_prev) / this->dt;
+        M_prev = error;
+        return Kd * out;
+      }
+
+      virtual T prev_error() const final
+      {
+        return M_prev;
+      }
+
+    private:
+      T M_prev;
+  };
+
+  template<class... C> class Controller : public C...
   {
-    return m_Prev;
-  }
+    using T = typename Controller::ValueType;
 
-  T Kd;
+    public:
+      T operator()(const T err) override
+      {
+        return (C::operator()(err) + ...);
+      }
+  };
 
-private:
-  T m_Prev;
-};
-
-template<class... C>
-class Controller : public C...
-{
-  using T = typename Controller::ValueType;
-
-public:
-  T operator()(const T err) override
-  {
-    return (C::operator()(err) + ...);
-  }
-};
-
-template<typename T = double>
-using PI = Controller<P<T>, I<T>>;
-
-template<typename T = double>
-using PD = Controller<P<T>, D<T>>;
-
-template<typename T = double>
-using PID = Controller<P<T>, I<T>, D<T>>;
+  template<typename T = double> using PI = Controller<P<T>, I<T>>;
+  template<typename T = double> using PD = Controller<P<T>, D<T>>;
+  template<typename T = double> using PID = Controller<P<T>, I<T>, D<T>>;
 }
